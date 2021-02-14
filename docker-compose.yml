@@ -1,0 +1,24 @@
+version: '3'
+services:
+  web:
+    environment: 
+      # If you are using any version of Windows and your React app is not automatically reloading after a code change, 
+      # you can add this environment variable to your compose file
+      - CHOKIDAR_USEPOLLING=true
+    build: 
+      context: . # where is the project
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - /app/node_modules
+      - .:/app # . is pwd on local machine and /app is on the container
+  tests:
+    build: 
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    # override the start up command 
+    command: ["npm", "run", "test"]
