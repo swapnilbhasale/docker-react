@@ -1,0 +1,13 @@
+sudo: required # super user permissions to execute the build
+language: generic
+# tell Travis we need a copy of docker running
+services:
+  - docker
+
+# build our image usinf the Dockerfile.dev
+before_install:
+  - docker build -t sbhasale/docker-react -f Dockerfile.dev .
+
+# tell Travis how to deploy our code
+script:
+  - docker run -e CI=true sbhasale/docker-react npm run test -- --coverage
